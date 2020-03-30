@@ -14,7 +14,7 @@ namespace Codecool.Quest.Models.Actors
         public override bool Fight(PlayerCharacter actor)
         {
 
-            if (!(actor is IPlayer) || actor.Weapons.IsBulletProof) return false;
+            if (!(actor is IPlayer) || actor.Weapons.IsNotVulnerable) return false;
             actor.Health -= 1;
             return actor.IsDead;
 

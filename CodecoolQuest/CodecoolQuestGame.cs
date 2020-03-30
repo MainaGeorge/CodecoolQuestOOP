@@ -129,7 +129,7 @@ namespace Codecool.Quest
 
             GUI.Text(new Vector2(900, 50), "items collected".ToUpperInvariant(), Color.AliceBlue);
 
-            ShowCollectedItems(gameMap, 900, 75, 25);
+            ShowCollectedItems(900, 75, 25, gameMap);
 
 
             SpriteBatch.End();
@@ -137,7 +137,7 @@ namespace Codecool.Quest
             base.Draw(gameTime);
         }
 
-        private void ShowCollectedItems(GameMap map, int width, int height, int spaceBetweenWords)
+        private static void ShowCollectedItems(int width, int height, int spaceBetweenWords, GameMap gameMap)
         {
             var itemsToDisplay = gameMap.Player.ItemsCollected.AllItems;
             for (var i = 0; i < itemsToDisplay.Count; i++)

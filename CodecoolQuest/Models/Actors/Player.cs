@@ -18,35 +18,27 @@ namespace Codecool.Quest.Models.Actors
 
         public override bool Fight(PlayerCharacter actor)
         {
-            var isOpponentDead = false;
-            if (Weapons.IsBulletProof)
+
+            if (Weapons.IsNotVulnerable)
             {
                 actor.Health -= 3;
-                isOpponentDead = actor.IsDead;
+                return actor.IsDead;
             }
 
-            else if (Weapons.Sword && Weapons.Gun)
+            else if (Weapons.SlightlyVulnerable)
             {
                 actor.Health -= 2;
                 Health -= 1;
-                isOpponentDead = actor.IsDead;
+                return actor.IsDead;
             }
 
-            else if (Weapons.Sword)
+            else
             {
                 actor.Health -= 1;
                 Health -= 2;
-                isOpponentDead = actor.IsDead;
+                return actor.IsDead;
             }
 
-            else if (Weapons.Gun)
-            {
-                actor.Health -= 1;
-                Health -= 2;
-                isOpponentDead = actor.IsDead;
-            }
-
-            return isOpponentDead;
         }
 
 
