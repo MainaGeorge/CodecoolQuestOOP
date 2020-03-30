@@ -3,26 +3,21 @@ using Codecool.Quest.Models.Utilities;
 
 namespace Codecool.Quest.Models.Actors
 {
-    public class Player : Actor, IFights
+    public class Player : PlayerCharacter, IPlayer
     {
 
         public override string TileName { get; } = "player";
 
-        public int Health { get; set; } = 20;
 
-        public Weapons Weapons { get; set; }
-
-        public bool IsDead => Health <= 0;
-        public ItemsCollected ItemsCollected { get; set; }
+        public ItemsCollected ItemsCollected { get; private set; }
 
         public Player(Cell cell) : base(cell)
         {
-            Weapons = new Weapons();
             ItemsCollected = new ItemsCollected();
+            Health = 20;
         }
 
-
-        public bool Fight(IFights actor)
+        public override bool Fight(PlayerCharacter actor)
         {
             var isOpponentDead = false;
             if (Weapons.Sword && Weapons.Headmask && Weapons.Gun)
@@ -77,24 +72,13 @@ namespace Codecool.Quest.Models.Actors
 
         public bool HandleWhatIsInTheCell(Actor actor)
         {
-
-            switch (actor)
+            return actor switch
             {
-                case ICollectable collectable:
-                    return collectable.GetCollected(this);
-
-                case IFights fighter:
-                    return Fight(fighter);
-
-
-                case IOpenable openableDoor:
-                    return openableDoor.OpenDoor(this);
-
-
-                default:
-                    return false;
-            }
-
+                ICollectable collectable => collectable.GetCollected(this),
+                PlayerCharacter fighter => Fight(fighter),
+                IOpenable openableDoor => openableDoor.OpenDoor(this),
+                _ => false
+            };
         }
     }
 }

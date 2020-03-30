@@ -27,19 +27,19 @@ namespace Codecool.Quest.Models
             CellType = cellType;
         }
 
-        public Cell GetNeighbor(int dx, int dy)
+        public Cell GetTheNeighbouringCell(int dx, int dy)
         {
             return _gameMap.GetCell(X + dx, Y + dy) ?? this;
         }
 
-        public Cell GetNeighbor(Neighbour neighbour)
+        public Cell GetTheNeighbouringCell(Neighbour neighbour)
         {
             return neighbour switch
             {
-                Neighbour.Right => GetNeighbor(1, 0),
-                Neighbour.Left => GetNeighbor(-1, 0),
-                Neighbour.Top => GetNeighbor(0, -1),
-                Neighbour.Bottom => GetNeighbor(0, 1),
+                Neighbour.Right => GetTheNeighbouringCell(1, 0),
+                Neighbour.Left => GetTheNeighbouringCell(-1, 0),
+                Neighbour.Top => GetTheNeighbouringCell(0, -1),
+                Neighbour.Bottom => GetTheNeighbouringCell(0, 1),
                 _ => throw new ArgumentOutOfRangeException(nameof(neighbour), neighbour, null)
             };
         }

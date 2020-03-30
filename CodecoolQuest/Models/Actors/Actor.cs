@@ -2,10 +2,9 @@
 
 namespace Codecool.Quest.Models.Actors
 {
-
     public abstract class Actor : IDrawable
     {
-        public Cell Cell { get; private set; }
+        public Cell Cell { get; protected set; }
 
         public int X => Cell.X;
 
@@ -18,15 +17,5 @@ namespace Codecool.Quest.Models.Actors
             Cell = cell;
             Cell.Actor = this;
         }
-
-        public void Move(int dx, int dy)
-        {
-            var nextCell = Cell.GetTheNeighbouringCell(dx, dy);
-            Cell.Actor = null;
-            nextCell.Actor = this;
-            Cell = nextCell;
-        }
-
-
     }
 }

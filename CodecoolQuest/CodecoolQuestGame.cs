@@ -77,7 +77,7 @@ namespace Codecool.Quest
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 // Move left
-                var nextCell = _map.Player.Cell.GetNeighbor(Neighbour.Left);
+                var nextCell = _map.Player.Cell.GetTheNeighbouringCell(Neighbour.Left);
 
                 if (nextCell.IsCellFree())
                 {
@@ -97,7 +97,7 @@ namespace Codecool.Quest
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 // Move right
-                var nextCell = _map.Player.Cell.GetNeighbor(Neighbour.Right);
+                var nextCell = _map.Player.Cell.GetTheNeighbouringCell(Neighbour.Right);
 
                 if (nextCell.IsCellFree())
                 {
@@ -118,7 +118,7 @@ namespace Codecool.Quest
             else if (keyboardState.IsKeyDown(Keys.Up))
             {
                 // Move up
-                var nextCell = _map.Player.Cell.GetNeighbor(Neighbour.Top);
+                var nextCell = _map.Player.Cell.GetTheNeighbouringCell(Neighbour.Top);
 
                 if (nextCell.IsCellFree())
                 {
@@ -139,7 +139,7 @@ namespace Codecool.Quest
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
                 // Move down
-                var nextCell = _map.Player.Cell.GetNeighbor(Neighbour.Bottom);
+                var nextCell = _map.Player.Cell.GetTheNeighbouringCell(Neighbour.Bottom);
 
                 if (nextCell.IsCellFree())
                 {

@@ -2,20 +2,21 @@
 
 namespace Codecool.Quest.Models.Actors
 {
-    public class Monster : Actor, IFights
+    public class Monster : PlayerCharacter
     {
         public Monster(Cell cell) : base(cell)
         {
+            Health = 15;
         }
 
         public override string TileName { get; } = "monster";
 
-        public int Health { get; set; } = 10;
-        public Weapons Weapons { get; set; }
-        public bool IsDead => Health <= 0;
-        public bool Fight(IFights actor)
+        public override bool Fight(PlayerCharacter actor)
         {
-            throw new System.NotImplementedException();
+            if (!(actor is IPlayer) || actor.Weapons.IsBulletProof) return false;
+            actor.Health -= 2;
+            return actor.IsDead;
+
         }
     }
 }
