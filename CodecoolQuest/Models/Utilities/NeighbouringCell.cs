@@ -1,6 +1,6 @@
 ﻿namespace Codecool.Quest.Models.Utilities
 {
-    public enum Neighbour
+    public enum NeighbouringCell
     {
         Right,
         Left,

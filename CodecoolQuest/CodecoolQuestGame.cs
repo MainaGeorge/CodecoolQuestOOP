@@ -16,7 +16,7 @@ namespace Codecool.Quest
 
         public SpriteBatch SpriteBatch;
 
-        private GameMap _map;
+        private GameMap gameMap;
         private TimeSpan _lastMoveTime;
 
         public const double MoveInterval = 0.1;
@@ -50,7 +50,7 @@ namespace Codecool.Quest
             GUI.Load();
             Tiles.Load();
 
-            _map = MapLoader.LoadMap();
+            gameMap = MapLoader.LoadMap();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Codecool.Quest
         {
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Escape) || _map.Player.IsDead)
+            if (keyboardState.IsKeyDown(Keys.Escape) || gameMap.Player.IsDead)
             {
                 // Exit the game
                 Exit();
@@ -76,86 +76,22 @@ namespace Codecool.Quest
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {
-                // Move left
-                var nextCell = _map.Player.Cell.GetTheNeighbouringCell(Neighbour.Left);
-
-                if (nextCell.IsCellFree())
-                {
-                    _map.Player.MovePlayer(MoveDirection.Left);
-                }
-                else
-                {
-                    var hasTheItemInCellBeenHandled = _map.Player.HandleWhatIsInTheCell(nextCell.Actor);
-                    if (hasTheItemInCellBeenHandled)
-                    {
-                        nextCell.ClearCell();
-                        _map.Player.MovePlayer(MoveDirection.Left);
-                    }
-                }
+                MovePlayer(gameMap, MoveDirection.Left, NeighbouringCell.Left);
                 _lastMoveTime = gameTime.TotalGameTime;
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
-                // Move right
-                var nextCell = _map.Player.Cell.GetTheNeighbouringCell(Neighbour.Right);
-
-                if (nextCell.IsCellFree())
-                {
-                    _map.Player.MovePlayer(MoveDirection.Right);
-                }
-                else
-                {
-                    var hasTheItemInCellBeenHandled = _map.Player.HandleWhatIsInTheCell(nextCell.Actor);
-                    if (hasTheItemInCellBeenHandled)
-                    {
-                        nextCell.ClearCell();
-                        _map.Player.MovePlayer(MoveDirection.Right);
-                    }
-                }
-
+                MovePlayer(gameMap, MoveDirection.Right, NeighbouringCell.Right);
                 _lastMoveTime = gameTime.TotalGameTime;
             }
             else if (keyboardState.IsKeyDown(Keys.Up))
             {
-                // Move up
-                var nextCell = _map.Player.Cell.GetTheNeighbouringCell(Neighbour.Top);
-
-                if (nextCell.IsCellFree())
-                {
-                    _map.Player.MovePlayer(MoveDirection.Up);
-                }
-                else
-                {
-                    var hasTheItemInCellBeenHandled = _map.Player.HandleWhatIsInTheCell(nextCell.Actor);
-                    if (hasTheItemInCellBeenHandled)
-                    {
-                        nextCell.ClearCell();
-                        _map.Player.MovePlayer(MoveDirection.Up);
-
-                    }
-                }
+                MovePlayer(gameMap, MoveDirection.Up, NeighbouringCell.Top);
                 _lastMoveTime = gameTime.TotalGameTime;
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                // Move down
-                var nextCell = _map.Player.Cell.GetTheNeighbouringCell(Neighbour.Bottom);
-
-                if (nextCell.IsCellFree())
-                {
-                    _map.Player.MovePlayer(MoveDirection.Down);
-
-                }
-                else
-                {
-                    var hasTheItemInCellBeenHandled = _map.Player.HandleWhatIsInTheCell(nextCell.Actor);
-                    if (hasTheItemInCellBeenHandled)
-                    {
-                        nextCell.ClearCell();
-                        _map.Player.MovePlayer(MoveDirection.Down);
-                    }
-                }
-
+                MovePlayer(gameMap, MoveDirection.Down, NeighbouringCell.Bottom);
                 _lastMoveTime = gameTime.TotalGameTime;
             }
 
@@ -172,11 +108,11 @@ namespace Codecool.Quest
 
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp);
 
-            for (var x = 0; x < _map.Width; x++)
+            for (var x = 0; x < gameMap.Width; x++)
             {
-                for (var y = 0; y < _map.Height; y++)
+                for (var y = 0; y < gameMap.Height; y++)
                 {
-                    var cell = _map.GetCell(x, y);
+                    var cell = gameMap.GetCell(x, y);
 
                     if (cell.Actor != null)
                     {
@@ -189,11 +125,11 @@ namespace Codecool.Quest
                 }
             }
 
-            GUI.Text(new Vector2(900, 25), $"Player Health {_map.Player.Health}", Color.BlanchedAlmond);
+            GUI.Text(new Vector2(900, 25), $"Player Health {gameMap.Player.Health}", Color.BlanchedAlmond);
 
             GUI.Text(new Vector2(900, 50), "items collected".ToUpperInvariant(), Color.AliceBlue);
 
-            ShowCollectedItems(_map, 900, 75, 25);
+            ShowCollectedItems(gameMap, 900, 75, 25);
 
 
             SpriteBatch.End();
@@ -203,12 +139,32 @@ namespace Codecool.Quest
 
         private void ShowCollectedItems(GameMap map, int width, int height, int spaceBetweenWords)
         {
-            var itemsToDisplay = _map.Player.ItemsCollected.AllItems;
+            var itemsToDisplay = gameMap.Player.ItemsCollected.AllItems;
             for (var i = 0; i < itemsToDisplay.Count; i++)
             {
                 GUI.Text(new Vector2(width, height + (i * spaceBetweenWords)),
                     itemsToDisplay[i].TileName.ToUpperInvariant(), Color.Aqua);
 
+            }
+        }
+
+        private static void MovePlayer(GameMap gameMap,
+            MoveDirection moveDirection, NeighbouringCell neighbouringCell)
+        {
+            var neighbourCell = gameMap.Player.Cell.GetTheNeighbouringCell(neighbouringCell);
+
+            if (neighbourCell.IsCellFree())
+            {
+                gameMap.Player.MovePlayer(moveDirection);
+            }
+            else
+            {
+                var hasTheItemInCellBeenHandled = gameMap.Player.HandleWhatIsInTheCell(neighbourCell.Actor);
+                if (hasTheItemInCellBeenHandled)
+                {
+                    neighbourCell.ClearCell();
+                    gameMap.Player.MovePlayer(moveDirection);
+                }
             }
         }
 

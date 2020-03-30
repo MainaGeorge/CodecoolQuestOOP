@@ -8,7 +8,6 @@ namespace Codecool.Quest.Models.Actors
 
         public override string TileName { get; } = "player";
 
-
         public ItemsCollected ItemsCollected { get; private set; }
 
         public Player(Cell cell) : base(cell)
@@ -20,9 +19,16 @@ namespace Codecool.Quest.Models.Actors
         public override bool Fight(PlayerCharacter actor)
         {
             var isOpponentDead = false;
-            if (Weapons.Sword && Weapons.Headmask && Weapons.Gun)
+            if (Weapons.IsBulletProof)
             {
                 actor.Health -= 3;
+                isOpponentDead = actor.IsDead;
+            }
+
+            else if (Weapons.Sword && Weapons.Gun)
+            {
+                actor.Health -= 2;
+                Health -= 1;
                 isOpponentDead = actor.IsDead;
             }
 
@@ -38,12 +44,6 @@ namespace Codecool.Quest.Models.Actors
                 actor.Health -= 1;
                 Health -= 2;
                 isOpponentDead = actor.IsDead;
-            }
-
-            else if (Weapons.Sword && Weapons.Gun)
-            {
-                actor.Health -= 2;
-                Health -= 1;
             }
 
             return isOpponentDead;
@@ -68,7 +68,6 @@ namespace Codecool.Quest.Models.Actors
 
             Move(x, y);
         }
-
 
         public bool HandleWhatIsInTheCell(Actor actor)
         {

@@ -32,15 +32,15 @@ namespace Codecool.Quest.Models
             return _gameMap.GetCell(X + dx, Y + dy) ?? this;
         }
 
-        public Cell GetTheNeighbouringCell(Neighbour neighbour)
+        public Cell GetTheNeighbouringCell(NeighbouringCell neighbouringCell)
         {
-            return neighbour switch
+            return neighbouringCell switch
             {
-                Neighbour.Right => GetTheNeighbouringCell(1, 0),
-                Neighbour.Left => GetTheNeighbouringCell(-1, 0),
-                Neighbour.Top => GetTheNeighbouringCell(0, -1),
-                Neighbour.Bottom => GetTheNeighbouringCell(0, 1),
-                _ => throw new ArgumentOutOfRangeException(nameof(neighbour), neighbour, null)
+                NeighbouringCell.Right => GetTheNeighbouringCell(1, 0),
+                NeighbouringCell.Left => GetTheNeighbouringCell(-1, 0),
+                NeighbouringCell.Top => GetTheNeighbouringCell(0, -1),
+                NeighbouringCell.Bottom => GetTheNeighbouringCell(0, 1),
+                _ => throw new ArgumentOutOfRangeException(nameof(neighbouringCell), neighbouringCell, null)
             };
         }
 
