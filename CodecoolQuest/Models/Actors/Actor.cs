@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace Codecool.Quest.Models.Actors
+﻿namespace Codecool.Quest.Models.Actors
 {
     public abstract class Actor : IDrawable
     {

@@ -1,18 +1,21 @@
 ﻿using Codecool.Quest.Models.Actors;
+using Codecool.Quest.Models.Utilities;
 
 namespace Codecool.Quest.Models.Assets
 {
-    public class Headmask : Actor, ICollectable
+    public class Headmask : Item
     {
         public Headmask(Cell cell) : base(cell)
         {
         }
 
+        public override ItemType ItemType { get; } = ItemType.Headmask;
+
         public override string TileName { get; } = "headmask";
-        public bool GetCollected(Player player)
+        public override bool GetCollected(Character character)
         {
-            player.Weapons.Headmask = true;
-            player.ItemsCollected.AddItemToTheCollection(this);
+            character.Weapons.Headmask = true;
+            character.ItemsCollected.AddItemToTheCollection(this);
             return true;
 
         }

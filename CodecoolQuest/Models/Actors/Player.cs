@@ -3,44 +3,45 @@ using Codecool.Quest.Models.Utilities;
 
 namespace Codecool.Quest.Models.Actors
 {
-    public class Player : PlayerCharacter, IPlayer
+    public class Player : Character
     {
 
         public override string TileName { get; } = "player";
 
-        public ItemsCollected ItemsCollected { get; private set; }
-
         public Player(Cell cell) : base(cell)
         {
-            ItemsCollected = new ItemsCollected();
             Health = 20;
         }
 
-        public override bool Fight(PlayerCharacter actor)
+        public override bool DropCollectedItem()
+        {
+            return true;
+        }
+
+        public override bool Fight(Character actor)
         {
 
             if (Weapons.IsNotVulnerable)
             {
                 actor.Health -= 3;
-                return actor.IsDead;
+                return actor.DropCollectedItem();
             }
 
             else if (Weapons.SlightlyVulnerable)
             {
                 actor.Health -= 2;
                 Health -= 1;
-                return actor.IsDead;
+                return actor.DropCollectedItem();
             }
 
             else
             {
                 actor.Health -= 1;
                 Health -= 2;
-                return actor.IsDead;
+                return actor.DropCollectedItem();
             }
 
         }
-
 
         public (int, int) DirectionToVector(MoveDirection move)
         {
@@ -65,9 +66,8 @@ namespace Codecool.Quest.Models.Actors
         {
             return actor switch
             {
-                ICollectable collectable => collectable.GetCollected(this),
-                PlayerCharacter fighter => Fight(fighter),
-                IOpenable openableDoor => openableDoor.OpenDoor(this),
+                Item collectable => collectable.GetCollected(this),
+                Character fighter => Fight(fighter),
                 _ => false
             };
         }

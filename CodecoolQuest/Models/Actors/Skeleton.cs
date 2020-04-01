@@ -1,8 +1,6 @@
-﻿using Codecool.Quest.Models.Utilities;
-
-namespace Codecool.Quest.Models.Actors
+﻿namespace Codecool.Quest.Models.Actors
 {
-    public class Skeleton : PlayerCharacter
+    public class Skeleton : Character, IEnemy
     {
         public Skeleton(Cell cell) : base(cell)
         {
@@ -11,13 +9,18 @@ namespace Codecool.Quest.Models.Actors
 
         public override string TileName { get; } = "skeleton";
 
-        public override bool Fight(PlayerCharacter actor)
+        public override bool Fight(Character actor)
         {
 
-            if (!(actor is IPlayer) || actor.Weapons.IsNotVulnerable) return false;
+            if (!(actor is IEnemy) || actor.Weapons.IsNotVulnerable) return false;
             actor.Health -= 1;
             return actor.IsDead;
 
+        }
+
+        public override bool DropCollectedItem()
+        {
+            return IsDead;
         }
     }
 }

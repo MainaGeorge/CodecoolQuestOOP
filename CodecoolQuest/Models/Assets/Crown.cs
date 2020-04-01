@@ -1,19 +1,21 @@
 ﻿using Codecool.Quest.Models.Actors;
+using Codecool.Quest.Models.Utilities;
 
 namespace Codecool.Quest.Models.Assets
 {
-    public class Crown : Actor, ICollectable
+    public class Crown : Item
     {
         public Crown(Cell cell) : base(cell)
         {
         }
 
+        public override ItemType ItemType { get; } = ItemType.Crown;
+
         public override string TileName { get; } = "crown";
 
-        public bool GetCollected(Player player)
+        public override bool GetCollected(Character character)
         {
-            player.ItemsCollected.Crown = this;
-            player.ItemsCollected.AddItemToTheCollection(this);
+            character.ItemsCollected.AddItemToTheCollection(this);
             return true;
         }
     }

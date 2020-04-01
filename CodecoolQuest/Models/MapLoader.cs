@@ -92,12 +92,7 @@ namespace Codecool.Quest.Models
                                     new Headmask(cell);
                                     break;
                                 }
-                            case 'c':
-                                {
-                                    cell.CellType = CellType.Floor;
-                                    new Crown(cell);
-                                    break;
-                                }
+                                
                         }
                     }
                 }

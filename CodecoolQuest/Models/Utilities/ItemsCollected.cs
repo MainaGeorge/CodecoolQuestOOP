@@ -6,24 +6,26 @@ namespace Codecool.Quest.Models.Utilities
 {
     public class ItemsCollected
     {
-        public Key Key { get; set; }
 
-        public Crown Crown { get; set; }
-
-        public List<Actor> AllItems { get; set; }
+        public List<Item> AllItems { get; set; }
 
         public ItemsCollected()
         {
-            AllItems = new List<Actor>();
+            AllItems = new List<Item>();
         }
 
-        public void AddItemToTheCollection(Actor collectedItem)
+        public void AddItemToTheCollection(Item collectedItem)
         {
             AllItems.Add(collectedItem);
         }
-        public IEnumerable<Actor> GetCollectedItems()
+        public List<Item> GetCollectedItems()
         {
             return AllItems;
+        }
+
+        public void RemoveAnItemFromTheCollection(Item item)
+        {
+            AllItems.Remove(item);
         }
 
 

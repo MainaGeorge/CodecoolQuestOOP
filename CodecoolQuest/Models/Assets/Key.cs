@@ -1,22 +1,22 @@
 ﻿using Codecool.Quest.Models.Actors;
+using Codecool.Quest.Models.Utilities;
 
 namespace Codecool.Quest.Models.Assets
 {
-    public class Key : Actor, ICollectable
+    public class Key : Item
     {
         public Key(Cell cell) : base(cell)
         {
         }
 
+        public override ItemType ItemType { get; } = ItemType.Key;
+
         public override string TileName { get; } = "key";
 
-        public bool GetCollected(Player player)
+        public override bool GetCollected(Character character)
         {
-            player.ItemsCollected.Key = this;
-            player.ItemsCollected.AddItemToTheCollection(this);
+            character.ItemsCollected.AddItemToTheCollection(this);
             return true;
         }
-
-
     }
 }

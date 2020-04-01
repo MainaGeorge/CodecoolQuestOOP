@@ -2,20 +2,23 @@
 
 namespace Codecool.Quest.Models.Actors
 {
-    public abstract class PlayerCharacter : Actor
+    public abstract class Character : Actor
     {
-        protected PlayerCharacter(Cell cell) : base(cell)
+        protected Character(Cell cell) : base(cell)
         {
             Weapons = new Weapons();
+            ItemsCollected = new ItemsCollected();
         }
+        public abstract bool DropCollectedItem();
 
         public int Health { get; set; }
 
         public Weapons Weapons { get; set; }
+        public ItemsCollected ItemsCollected { get; set; }
 
         public bool IsDead => Health <= 0;
 
-        public abstract bool Fight(PlayerCharacter actor);
+        public abstract bool Fight(Character actor);
 
         public void Move(int dx, int dy)
         {
